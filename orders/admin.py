@@ -7,6 +7,7 @@ from orders.models import Order, Discount
 class OrdersAdminRegister(admin.ModelAdmin):
     ...
 
+
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
     ...
