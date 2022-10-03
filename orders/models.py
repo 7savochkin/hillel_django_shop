@@ -9,8 +9,9 @@ from shop.model_choices import DiscountTypes
 
 
 class Discount(PrimaryKeyMixin):
-    amount = models.PositiveIntegerField(
-        default=0)
+    amount = models.DecimalField(max_digits=MAX_DIGITS,
+                                 decimal_places=DECIMAL_PLACES,
+                                 default=0)
     code = models.CharField(
         max_length=30)
     is_active = models.BooleanField(
@@ -47,8 +48,7 @@ class Order(PrimaryKeyMixin):
                 return (self.total_amount - self.discount.amount).quantize(
                     Decimal('.00'))
             elif self.discount.discount_type == DiscountTypes.PERCENT:
-                return (self.total_amount - ((
-                            self.total_amount * self.discount.amount) / 100)).quantize(Decimal('.00')) # noqa
+                return (self.total_amount - ((self.total_amount * self.discount.amount) / 100)).quantize(Decimal('.00')) # noqa
         return self.total_amount
 
     def __str__(self):
