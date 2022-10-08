@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from feedbacks.forms import FeedbackForm
+from feedbacks.models import Feedback
 
 
 def feedbacks(request, *args, **kwargs):
@@ -11,6 +12,7 @@ def feedbacks(request, *args, **kwargs):
     else:
         form = FeedbackForm()
     context = {
+        'feedbacks': Feedback.objects.all(),
         'form': form,
     }
     return render(request, 'feedbacks/index.html', context=context)

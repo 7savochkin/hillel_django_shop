@@ -12,4 +12,4 @@ class Feedback(PrimaryKeyMixin):
         validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     def __str__(self):
-        return f'{self.user.username} | {self.text}'
+        return f'{self.user.username} | {self.text} | {self.rating}'

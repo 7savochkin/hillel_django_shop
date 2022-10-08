@@ -5,6 +5,14 @@
     <title>Feedbacks</title>
 </head>
 <body>
+<h1>Feedbacks:</h1>
+{% for field in feedbacks %}
+    <p>
+        <span>User: {{ field.user }} |</span>
+        <span>Text: {{ field.text }} |</span>
+        <span>Rating: {{ field.rating }} ;</span>
+    </p>
+{% endfor %}
 <h1>Please, write your feedback</h1>
 <div>
     <form method="post">
