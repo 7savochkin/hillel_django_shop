@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+</head>
+<body>
+<h1>Sign Up</h1>
+<div>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <label>{{ field.label }}</label>
+            {{ field }}
+        {% endfor %}
+        <input type="submit" value="Sign Up">
+    </form>
+<p>
+    {{ form.errors }}
+</p>
+</div>
+</body>
+</html>
+</body>
+</html>
