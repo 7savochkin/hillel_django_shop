@@ -34,7 +34,7 @@ class Order(PrimaryKeyMixin):
         on_delete=models.SET_NULL,
         blank=True,
         null=True)
-    products = models.ManyToManyField('items.Product')
+    products = models.ManyToManyField('products.Product')
     discount = models.ForeignKey(
         Discount,
         on_delete=models.SET_NULL,

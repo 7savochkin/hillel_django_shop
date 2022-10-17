@@ -1,24 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-<h1>Login</h1>
-{{ request.user.is_authenticated }}
-<div>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <label>{{ field.label }}</label>
-            {{ field }}
-        {% endfor %}
-        <input type="submit" value="Login">
-    </form>
-<p>
-    {{ form.errors }}
-</p>
-</div>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Login
+{% endblock title %}
+
+
+{% block content %}
+    <div class="text-center">
+        <div class="col col-lg-4 offset-lg-4">
+            <h1>Authorization</h1>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <label>{{ field.label }}</label>
+                    <div class="row">
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <input type="submit" value="Login">
+            </form>
+            <p class="mt-3 text-center">
+                <span>Don`t have account?</span>
+                <a href="{% url 'sign_up' %}">Sign Up</a>
+            </p>
+            <p>
+                {{ form.errors }}
+            </p>
+        </div>
+    </div>
+{% endblock content %}

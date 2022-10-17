@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # Working directory
-/images
-/static
+/images/
 .idea
+/static/

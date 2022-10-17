@@ -4,13 +4,20 @@ from django.db import models
 from shop.mixins.models_mixins import PrimaryKeyMixin
 
 
-class Item(PrimaryKeyMixin):
+class Product(PrimaryKeyMixin):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='images/item')
+    image = models.ImageField(upload_to='images/product')
     category = models.ForeignKey(
-        'items.Category',
+        'products.Category',
         on_delete=models.CASCADE)
+    price = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)])
+    sku = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True)
+    products = models.ManyToManyField('products.Product', blank=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -23,16 +30,3 @@ class Category(PrimaryKeyMixin):
 
     def __str__(self):
         return f'{self.name} | {self.description}'
-
-
-class Product(PrimaryKeyMixin):
-    price = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1)])
-    sku = models.CharField(
-        max_length=64,
-        blank=True,
-        null=True)
-    items = models.ManyToManyField(Item)
-
-    def __str__(self):
-        return f"{self.sku} | {self.price}"
