@@ -1,30 +1,35 @@
-"""
+import codecs
+import csv
+
 from django import forms
+from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 
-from products.models import Item, Category
+from products.models import Product, Category
 
 
-class ItemForm(forms.Form):
-    name = forms.CharField()
-    description = forms.CharField(required=False)
-    image = forms.ImageField()
-    category = forms.CharField()
+class ImportForm(forms.Form):
+    csv_file = forms.FileField(validators=[FileExtensionValidator(['csv'])])
 
-    def is_valid(self):
-        is_valid = super().is_valid()
-
-        if is_valid:
-            category_name = self.cleaned_data['category']
+    def clean_csv_file(self):
+        uploaded_file = self.cleaned_data['csv_file']
+        reader = csv.DictReader(codecs.iterdecode(uploaded_file, 'utf-8'))
+        product_list = []
+        for row in reader:
             try:
-                category = Category.objects.get(name=category_name)
-            except Category.DoesNotExist:
-                self.errors.update({
-                    'category': f"{category_name} doesn't exist."
-                })
-            else:
-                self.cleaned_data['category'] = category
-        return is_valid
+                product_list.append(
+                    Product(
+                        name=row['name'],
+                        description=row['description'],
+                        price=row['price'],
+                        sku=row['sku'],
+                        category=Category.objects.get_or_create(
+                            name=row['name'])[0]
+                    )
+                )
+            except KeyError as error:
+                raise ValidationError(error)
+        return product_list
 
     def save(self):
-        return Item.objects.create(**self.cleaned_data)
-"""
+        Product.objects.bulk_create(self.cleaned_data['csv_file'])
