@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView
 
-from products.model_forms import ImportForm
+from products.forms import ImportForm
 from products.models import Product
 from shop.mixins.views_mixins import StaffUserCheck
 from shop.settings import DOMAIN
