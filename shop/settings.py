@@ -33,6 +33,7 @@ SECRET_KEY = env('SECRET_KEY', default='SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=True)
+DOMAIN = env('DOMAIN', default='127.0.0.1:8888')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='').split(',')
 

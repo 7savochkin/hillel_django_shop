@@ -25,13 +25,13 @@
                                         {% if product.products.exists %}
                                             <p>Including:</p>
                                             {% for sub in product.products.iterator %}
-                                                    <p>{{ sub.name }}</p>
+                                                <p>{{ sub.name }}</p>
                                             {% endfor %}
                                         {% endif %}
                                     <i>Price: {{ product.price }} $</i>
                                     </p>
-                                    <a href="#" class="btn btn-primary">Buy
-                                        it</a>
+                                    <a href="#" class="btn btn-primary">
+                                        Buy it</a>
                                 </div>
                             </div>
                         </div>

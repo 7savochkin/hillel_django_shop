@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Upload CSV
+{% endblock %}
+{% block content %}
+    <div class="text-center">
+        <div class="row-1">
+            <h1>Upload File</h1>
+        </div>
+        <div class="row-2">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field }}
+                {% endfor %}
+                <input class="btn btn-primary mt-3" type="submit"
+                       value="Submit">
+            </form>
+            <p>
+                {{ form.errors }}
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -7,7 +7,8 @@ from shop.mixins.models_mixins import PrimaryKeyMixin
 class Product(PrimaryKeyMixin):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='images/product')
+    image = models.ImageField(upload_to='images/product',
+                              default='static/images/products/no_image.jpg')
     category = models.ForeignKey(
         'products.Category',
         on_delete=models.CASCADE)
