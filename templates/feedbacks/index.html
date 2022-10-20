@@ -1,31 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Feedbacks</title>
-</head>
-<body>
-<h1>Feedbacks:</h1>
-{% for field in feedbacks %}
-    <p>
-        <span>User: {{ field.user }} |</span>
-        <span>Text: {{ field.text }} |</span>
-        <span>Rating: {{ field.rating }} ;</span>
-    </p>
-{% endfor %}
-<h1>Please, write your feedback</h1>
-<div>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <label>{{ field.label }}</label>
-            {{ field }}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Feedbacks
+{% endblock title %}
+{% block content %}
+    <div class="text-center">
+        <h1>Feedbacks:</h1>
+        {% for field in feedbacks %}
+            <p>
+                <span>User: {{ field.user }} |</span>
+                <span>Text: {{ field.text }} |</span>
+                <span>Rating: {{ field.rating }} ;</span>
+            </p>
         {% endfor %}
-        <input type="submit" value="Write feedback">
-    </form>
-<p>
-    {{ form.errors }}
-</p>
-</div>
-</body>
-</html>
+        <h1>Please, write your feedback</h1>
+        <div>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                {% endfor %}
+                <input type="submit" value="Write feedback">
+            </form>
+            <p>
+                {{ form.errors }}
+            </p>
+        </div>
+    </div>
+{% endblock content %}

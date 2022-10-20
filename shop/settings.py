@@ -33,6 +33,7 @@ SECRET_KEY = env('SECRET_KEY', default='SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=True)
+DOMAIN = env('DOMAIN', default='127.0.0.1:8888')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='').split(',')
 
@@ -46,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # own apps
-    'items',
+    'main',
+    'products',
     'orders',
     'feedbacks',
     'users',
@@ -98,19 +100,15 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', # noqa
-        # noqa
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', # noqa
-        # noqa
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', # noqa
-        # noqa
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', # noqa
-        # noqa
     },
 ]
 
@@ -131,12 +129,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
+STATICFILES_DIRS = ['static_dev']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGOUT_REDIRECT_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = 'items'
-LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = reverse_lazy('main')
+LOGIN_REDIRECT_URL = reverse_lazy('main')
+LOGIN_URL = reverse_lazy('login')

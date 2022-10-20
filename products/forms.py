@@ -1,6 +1,7 @@
+"""
 from django import forms
 
-from items.models import Item, Category
+from products.models import Item, Category
 
 
 class ItemForm(forms.Form):
@@ -10,10 +11,6 @@ class ItemForm(forms.Form):
     category = forms.CharField()
 
     def is_valid(self):
-        """
-        Validate data
-        :return:
-        """
         is_valid = super().is_valid()
 
         if is_valid:
@@ -29,8 +26,5 @@ class ItemForm(forms.Form):
         return is_valid
 
     def save(self):
-        """
-        Create Item
-        :return:
-        """
         return Item.objects.create(**self.cleaned_data)
+"""
