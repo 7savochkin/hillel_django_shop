@@ -29,6 +29,8 @@ class ImportForm(forms.Form):
                 )
             except KeyError as error:
                 raise ValidationError(error)
+        if not product_list:
+            raise ValidationError("Wrong file")
         return product_list
 
     def save(self):
