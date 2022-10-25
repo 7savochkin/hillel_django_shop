@@ -4,8 +4,9 @@ from orders.models import Order, Discount
 
 
 @admin.register(Order)
-class OrdersAdminRegister(admin.ModelAdmin):
-    ...
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'total_amount', 'discount')
+    filter_horizontal = ('products',)
 
 
 @admin.register(Discount)

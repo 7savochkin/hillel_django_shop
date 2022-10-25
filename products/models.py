@@ -1,6 +1,6 @@
-from django.core.validators import MinValueValidator
 from django.db import models
 
+from shop.constants import DECIMAL_PLACES, MAX_DIGITS
 from shop.mixins.models_mixins import PrimaryKeyMixin
 
 
@@ -12,8 +12,11 @@ class Product(PrimaryKeyMixin):
     category = models.ForeignKey(
         'products.Category',
         on_delete=models.CASCADE)
-    price = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1)])
+    price = models.DecimalField(
+        max_digits=MAX_DIGITS,
+        decimal_places=DECIMAL_PLACES,
+        default=0
+    )
     sku = models.CharField(
         max_length=64,
         blank=True,

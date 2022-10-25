@@ -20,7 +20,7 @@
                                     <h5 class="card-title">{{ product.name }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">{{ product.category.name }}</h6>
                                     <p class="card-text">
-                                        {{ product.description|truncatechars:100 }}<br>
+                                        {{ product.description|truncatechars:40 }}<br>
                                         <br>
                                         {% if product.products.exists %}
                                             <p>Including:</p>
@@ -30,8 +30,10 @@
                                         {% endif %}
                                     <i>Price: {{ product.price }} $</i>
                                     </p>
-                                    <a href="#" class="btn btn-primary">
-                                        Buy it</a>
+                                    <a href="{% url 'product_detail' product.id %}"
+                                       class="btn btn-primary">
+                                        View Product
+                                    </a>
                                 </div>
                             </div>
                         </div>

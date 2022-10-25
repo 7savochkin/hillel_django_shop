@@ -3,7 +3,7 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView
 
 from products.forms import ImportForm
 from products.models import Product
@@ -12,6 +12,10 @@ from shop.settings import DOMAIN
 
 
 class ProductView(ListView):
+    model = Product
+
+
+class ProductDetail(DetailView):
     model = Product
 
 
