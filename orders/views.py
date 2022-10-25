@@ -73,6 +73,7 @@ class DiscountShoppingCartView(BaseShoppingCartRedirectView):
 
 class PayShoppingCartView(BaseShoppingCartRedirectView):
     url = reverse_lazy('successful_pay')
+
     def post(self, request, *args, **kwargs):
         super(PayShoppingCartView, self).post(request, *args, *kwargs)
         if self.order.products.exists():

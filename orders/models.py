@@ -55,8 +55,7 @@ class Order(LifecycleModelMixin, PrimaryKeyMixin):
                     self.total_amount -= self.discount.amount
                 else:
                     self.total_amount -= (
-                            self.total_amount / 100 * self.discount.amount).quantize(
-                        # noqa
+                            self.total_amount / 100 * self.discount.amount).quantize( # noqa
                         Decimal('.01'))
         return self.total_amount
 

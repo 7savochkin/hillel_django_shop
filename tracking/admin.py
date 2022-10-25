@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.admin import register
 
 from tracking.models import Tracking
+
+
 @register(Tracking)
 class TrackingAdmin(admin.ModelAdmin):
     readonly_fields = ('method', 'url', 'data')
