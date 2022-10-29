@@ -5,3 +5,5 @@ django-extensions==3.2.1
 Pillow==9.2.0
 ipdb==0.13.9
 django-lifecycle==1.0.0
+celery[redis]==5.2
+django-celery-results==2.2.0

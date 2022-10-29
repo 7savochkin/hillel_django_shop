@@ -132,3 +132,6 @@ dmypy.json
 /images/
 .idea
 /static/
+
+#Redis staff
+dump.rdb
