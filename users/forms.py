@@ -1,8 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-from django_lifecycle import AFTER_SAVE, hook
-
-from orders.models import Order
 
 
 class SignUpModelForm(forms.ModelForm):
@@ -42,5 +39,3 @@ class SignUpModelForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
-
