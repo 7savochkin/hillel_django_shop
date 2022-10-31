@@ -4,7 +4,7 @@ from datetime import timedelta
 from celery import shared_task
 from django.utils import timezone
 
-from currencies.clients.client import PrivatBankAPI
+from currencies.clients.client import pb_client
 from currencies.models import CurrencyHistory
 from shop.celery import app
 from shop.model_choices import Currency
@@ -21,7 +21,7 @@ def clear_old_currencies():
 
 @shared_task
 def get_currencies():
-    currency_list = PrivatBankAPI()
+    currency_list = pb_client()
     currency_history_list = []
     for currency in currency_list:
         try:

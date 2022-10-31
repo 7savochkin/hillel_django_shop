@@ -49,7 +49,8 @@ class PrivatBankAPI(GetCurrencyBaseClient):
         for currency in currency_list:
             if 'err_internal_server_error' in currency.keys() or \
                     'err_incorrect_json' in currency.keys():
-                return MonobankAPI()
+                mono = MonobankAPI()
+                return mono.get_currency()
         return currency_list
 
 
@@ -84,7 +85,8 @@ class MonobankAPI(GetCurrencyBaseClient):
             if 'err_internal_server_error' in currency.keys() or \
                     'err_incorrect_json' in currency.keys() or \
                     'errorDescription' in currency.keys():
-                return NationalBankAPI()
+                nbu = NationalBankAPI()
+                return nbu.get_currency()
             else:
                 if iso_codes[currency['currencyCodeB']] == 'UAH' and \
                         currency['currencyCodeA'] in iso_codes.keys():
@@ -130,3 +132,6 @@ class NationalBankAPI(GetCurrencyBaseClient):
 
     def get_currency(self) -> list:
         return self._reformat_currency()
+
+
+pb_client = PrivatBankAPI()
