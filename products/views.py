@@ -14,6 +14,9 @@ from shop.settings import DOMAIN
 class ProductView(ListView):
     model = Product
 
+    def get_queryset(self):
+        return self.model.get_products()
+
 
 class ProductDetail(DetailView):
     model = Product

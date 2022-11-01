@@ -135,3 +135,4 @@ dmypy.json
 
 #Redis staff
 dump.rdb
+/django_cache/

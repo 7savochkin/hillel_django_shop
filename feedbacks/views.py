@@ -20,7 +20,7 @@ def feedbacks(request, *args, **kwargs):
     else:
         form = FeedbackModelForm(user=user)
     context = {
-        'feedbacks': Feedback.objects.all(),
+        'feedbacks': Feedback.get_feedbacks(),
         'form': form,
     }
     return render(request, 'feedbacks/index.html', context=context)

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -13,3 +14,21 @@ class Feedback(PrimaryKeyMixin):
 
     def __str__(self):
         return f'{self.user.username} | {self.text} | {self.rating}'
+
+    @classmethod
+    def _cache_key(cls):
+        return 'feedbacks'
+
+    @classmethod
+    def get_feedbacks(cls):
+        feedbacks = cache.get(cls._cache_key())
+        if feedbacks:
+            cache.delete(cls._cache_key())
+        cache.set(cls._cache_key(), Feedback.objects.all())
+        return cache.get(cls._cache_key())
+
+ #       feedbacks = cache.get(cls._cache_key())
+  #      if feedbacks:
+   #         cache.delete(cls._cache_key())
+    #    feedbacks = cache.get_or_set(cls._cache_key(), Feedback.objects.all())
+

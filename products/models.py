@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db import models
 
 from shop.constants import DECIMAL_PLACES, MAX_DIGITS
@@ -31,6 +32,18 @@ class Product(PrimaryKeyMixin):
 
     def __str__(self):
         return f'{self.name}'
+
+    @classmethod
+    def _cache_key(self):
+        return 'products'
+
+    @classmethod
+    def get_products(cls):
+        products = cache.get(cls._cache_key())
+        if products:
+            cache.delete(cls._cache_key())
+        cache.set(cls._cache_key(), Product.objects.all())
+        return cache.get(cls._cache_key())
 
 
 class Category(PrimaryKeyMixin):
