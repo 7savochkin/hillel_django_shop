@@ -159,6 +159,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'currencies.tasks.get_currencies',
         'schedule': crontab(hour='9', minute='1'),
     },
+    'Update price': {
+        'task': 'products.tasks.update_currency_price',
+        'schedule': crontab(hour='12', minute='1'),
+    },
 }
 CACHES = {
     'default': {

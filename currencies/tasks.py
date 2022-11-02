@@ -21,7 +21,7 @@ def clear_old_currencies():
 
 @shared_task
 def get_currencies():
-    currency_list = pb_client()
+    currency_list = pb_client.get_currency()
     currency_history_list = []
     for currency in currency_list:
         try:

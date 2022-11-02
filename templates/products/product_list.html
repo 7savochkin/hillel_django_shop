@@ -28,7 +28,7 @@
                                                 <p>{{ sub.name }}</p>
                                             {% endfor %}
                                         {% endif %}
-                                    <i>Price: {{ product.price }} $</i>
+                                    <i>Price: {{ product.price }} {{ product.currency }}</i>
                                     </p>
                                     <a href="{% url 'product_detail' product.id %}"
                                        class="btn btn-primary">

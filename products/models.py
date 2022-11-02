@@ -1,6 +1,8 @@
 from django.core.cache import cache
 from django.db import models
+from django.utils import timezone
 
+from currencies.models import CurrencyHistory
 from shop.constants import DECIMAL_PLACES, MAX_DIGITS
 from shop.mixins.models_mixins import PrimaryKeyMixin
 from shop.model_choices import Currency
@@ -15,6 +17,11 @@ class Product(PrimaryKeyMixin):
         'products.Category',
         on_delete=models.CASCADE)
     price = models.DecimalField(
+        max_digits=MAX_DIGITS,
+        decimal_places=DECIMAL_PLACES,
+        default=0
+    )
+    actual_price = models.DecimalField(
         max_digits=MAX_DIGITS,
         decimal_places=DECIMAL_PLACES,
         default=0
