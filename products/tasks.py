@@ -22,6 +22,6 @@ def update_currency_price():
                     'sale']
             else:
                 products.actual_price = products.price
+            products.save(update_fields=['actual_price'])
         except (KeyError, ValueError) as error:
             logger.error(error)
-        products.save(update_fields=['actual_price'])
