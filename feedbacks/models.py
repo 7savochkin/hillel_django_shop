@@ -2,11 +2,13 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django_lifecycle import hook, LifecycleModelMixin, AFTER_DELETE, \
+    AFTER_SAVE
 
 from shop.mixins.models_mixins import PrimaryKeyMixin
 
 
-class Feedback(PrimaryKeyMixin):
+class Feedback(LifecycleModelMixin, PrimaryKeyMixin):
     text = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField(
@@ -22,7 +24,12 @@ class Feedback(PrimaryKeyMixin):
     @classmethod
     def get_feedbacks(cls):
         feedbacks = cache.get(cls._cache_key())
-        if feedbacks:
-            cache.delete(cls._cache_key())
-        cache.set(cls._cache_key(), Feedback.objects.all())
-        return cache.get(cls._cache_key())
+        if not feedbacks:
+            feedbacks = Feedback.objects.all()
+            cache.set(cls._cache_key(), feedbacks)
+        return feedbacks
+
+    @hook(AFTER_SAVE)
+    @hook(AFTER_DELETE)
+    def clear_feedbacks_cache(self):
+        cache.delete(self._cache_key())

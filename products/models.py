@@ -1,5 +1,7 @@
 from django.core.cache import cache
 from django.db import models
+from django_lifecycle import LifecycleModelMixin, hook, AFTER_CREATE, \
+    AFTER_DELETE, AFTER_UPDATE, BEFORE_DELETE, AFTER_SAVE
 
 from currencies.models import CurrencyHistory # noqa
 from shop.constants import DECIMAL_PLACES, MAX_DIGITS
@@ -7,7 +9,7 @@ from shop.mixins.models_mixins import PrimaryKeyMixin
 from shop.model_choices import Currency
 
 
-class Product(PrimaryKeyMixin):
+class Product(LifecycleModelMixin, PrimaryKeyMixin):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='images/product',
@@ -46,10 +48,15 @@ class Product(PrimaryKeyMixin):
     @classmethod
     def get_products(cls):
         products = cache.get(cls._cache_key())
-        if products:
-            cache.delete(cls._cache_key())
-        cache.set(cls._cache_key(), Product.objects.all())
-        return cache.get(cls._cache_key())
+        if not products:
+            products = Product.objects.all()
+            cache.set(cls._cache_key(), products)
+        return products
+
+    @hook(AFTER_SAVE)
+    @hook(AFTER_DELETE)
+    def clear_products_cache(self):
+        cache.delete(self._cache_key())
 
 
 class Category(PrimaryKeyMixin):
