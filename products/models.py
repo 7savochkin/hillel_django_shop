@@ -1,6 +1,5 @@
 from django.core.cache import cache
 from django.db import models
-from django.utils import timezone
 
 from currencies.models import CurrencyHistory
 from shop.constants import DECIMAL_PLACES, MAX_DIGITS

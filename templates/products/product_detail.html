@@ -30,8 +30,11 @@
                                                 <p>{{ sub.name }}</p>
                                             {% endfor %}
                                         {% endif %}
-                                    <i>Price in {{ product.currency }}: {{ product.price }} </i><br>
-                                    <i>Price in UAH: {{ product.actual_price }}</i>
+                                    <i>Price
+                                        in {{ product.currency }}: {{ product.price }} </i><br>
+                                    {% if product.currency != 'UAH' %}
+                                        <i>Price in UAH: {{ product.actual_price }}</i>
+                                    {% endif %}
                                     {% if request.user.is_authenticated %}
                                         <form method="post"
                                               action="{% url 'add_shopping_cart' %}">

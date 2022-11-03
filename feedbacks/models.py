@@ -26,9 +26,3 @@ class Feedback(PrimaryKeyMixin):
             cache.delete(cls._cache_key())
         cache.set(cls._cache_key(), Feedback.objects.all())
         return cache.get(cls._cache_key())
-
- #       feedbacks = cache.get(cls._cache_key())
-  #      if feedbacks:
-   #         cache.delete(cls._cache_key())
-    #    feedbacks = cache.get_or_set(cls._cache_key(), Feedback.objects.all())
-
