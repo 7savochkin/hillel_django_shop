@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.db import models
 
-from currencies.models import CurrencyHistory
+from currencies.models import CurrencyHistory # noqa
 from shop.constants import DECIMAL_PLACES, MAX_DIGITS
 from shop.mixins.models_mixins import PrimaryKeyMixin
 from shop.model_choices import Currency

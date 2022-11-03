@@ -1,7 +1,5 @@
 from time import sleep
 
-from django.core.cache import cache
-
 from shop.celery import app
 
 
@@ -14,4 +12,4 @@ def task_task(self, x, y):
     except (KeyError, TypeError) as exc:
         raise self.retry(exc=exc, countdown=5)
     print('TEST AFTER')
-    return x+y
+    return x + y
