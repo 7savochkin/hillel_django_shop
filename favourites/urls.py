@@ -6,5 +6,5 @@ from favourites.views import FavouritesView, DeleteFavouritesView, \
 urlpatterns = [
     path('favourites/', FavouritesView.as_view(), name='favourites'),
     path('add_to/', AddFavouritesView.as_view(), name='add_favourites'),
-    path('del_from/', DeleteFavouritesView.as_view(), name='delete_favourites'),
+    path('del_from/', DeleteFavouritesView.as_view(), name='delete_favourites'), # noqa
 ]

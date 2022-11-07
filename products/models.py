@@ -4,7 +4,7 @@ from django.db import models
 from django_lifecycle import LifecycleModelMixin, hook, \
     AFTER_DELETE, AFTER_SAVE
 
-from currencies.models import CurrencyHistory # noqa
+from currencies.models import CurrencyHistory  # noqa
 from shop.constants import DECIMAL_PLACES, MAX_DIGITS
 from shop.mixins.models_mixins import PrimaryKeyMixin
 from shop.model_choices import Currency
@@ -43,7 +43,7 @@ class Product(LifecycleModelMixin, PrimaryKeyMixin):
         return f'{self.name}'
 
     @classmethod
-    def _cache_key(self):
+    def _cache_key(cls):
         return 'products'
 
     @classmethod

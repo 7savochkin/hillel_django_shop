@@ -1,13 +1,12 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import AbstractUser, PermissionsMixin, \
+from django.contrib.auth.models import PermissionsMixin, \
     UserManager as DjangoUserManager
 from django.core.mail import send_mail
 from django.core.validators import EmailValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django_lifecycle import LifecycleModelMixin
 
 
 class UserManager(DjangoUserManager):
@@ -89,4 +88,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
