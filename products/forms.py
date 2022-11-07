@@ -8,6 +8,25 @@ from django.core.validators import FileExtensionValidator
 from products.models import Product, Category
 
 
+class BaseFavouriteForm(forms.Form):
+    product_uuid = forms.UUIDField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, *kwargs)
+        self.favourite = kwargs['favourite']
+
+    def is_valid(self):
+        ...
+
+
+class AddToFavourite(BaseFavouriteForm):
+    ...
+
+
+class DeleteFromFavourite(BaseFavouriteForm):
+    ...
+
+
 class ImportForm(forms.Form):
     csv_file = forms.FileField(validators=[FileExtensionValidator(['csv'])])
 

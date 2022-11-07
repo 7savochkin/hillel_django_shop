@@ -33,7 +33,8 @@
                                     <i>Price
                                         in {{ product.currency }}: {{ product.price }} </i><br>
                                     {% if product.currency != 'UAH' %}
-                                        <i>Price in UAH: {{ product.actual_price }}</i>
+                                        <i>Price in
+                                            UAH: {{ product.actual_price }}</i>
                                     {% endif %}
                                     {% if request.user.is_authenticated %}
                                         <form method="post"
@@ -43,12 +44,23 @@
                                                    value="{{ product.id }}"
                                                    name="product_uuid">
                                             <input type="submit"
-                                                   class="btn btn-primary"
+                                                   class="btn btn-outline-success"
                                                    value="Buy it">
                                         </form>
+                                        <form method="post"
+                                              action="{% url 'add_favourites' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden"
+                                                   value="{{ product.id }}"
+                                                   name="product_uuid">
+                                            <input type="submit"
+                                                   class="btn btn-outline-info btn-sm"
+                                                   value="Add to favourites">
+                                        </form>
                                     {% else %}
+                                        <br>
                                         <a href="{% url 'login' %}"
-                                           class="btn btn-primary">
+                                           class="btn btn-secondary">
                                             Login to buy
                                         </a>
                                     {% endif %}

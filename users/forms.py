@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class SignUpModelForm(forms.ModelForm):
@@ -21,7 +21,7 @@ class SignUpModelForm(forms.ModelForm):
     )
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('email', 'password1', 'password2',)
 
     def is_valid(self):

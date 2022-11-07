@@ -1,7 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.db import models
-from django_lifecycle import LifecycleModelMixin, hook, AFTER_CREATE, \
-    AFTER_DELETE, AFTER_UPDATE, BEFORE_DELETE, AFTER_SAVE
+from django_lifecycle import LifecycleModelMixin, hook, \
+    AFTER_DELETE, AFTER_SAVE
 
 from currencies.models import CurrencyHistory # noqa
 from shop.constants import DECIMAL_PLACES, MAX_DIGITS
@@ -66,3 +67,7 @@ class Category(PrimaryKeyMixin):
 
     def __str__(self):
         return f'{self.name} | {self.description}'
+
+
+
+

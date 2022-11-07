@@ -32,7 +32,6 @@ class ShoppingCartView(LoginRequiredMixin, TemplateView):
 
 
 class AddShoppingCartView(BaseShoppingCartRedirectView):
-    url = reverse_lazy('products')
 
     def post(self, request, *args, **kwargs):
         super(AddShoppingCartView, self).post(request, *args, *kwargs)

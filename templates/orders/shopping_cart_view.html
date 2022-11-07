@@ -17,7 +17,7 @@
                                       action="{% url 'clear_shopping_cart' %}">
                                     {% csrf_token %}
                                     <input type="submit"
-                                           class="btn btn-warning btn-block btn"
+                                           class="btn btn-danger"
                                            value="Clear All">
                                 </form>
                             </div>
@@ -55,8 +55,8 @@
                                                        value="{{ product.id }}"
                                                        name="product_uuid">
                                                 <input type="submit"
-                                                       class="text-danger"
-                                                       value="Del">
+                                                       class="btn btn-outline-danger"
+                                                       value="Delete">
                                             </form>
                                         </div>
                                     </div>
@@ -101,7 +101,7 @@
                                       action="{% url 'pay_shopping_cart' %}">
                                     {% csrf_token %}
                                     <input type="submit"
-                                           class="btn btn-warning btn-block btn-lg"
+                                           class="btn btn-success btn-block btn-lg"
                                            value="Proceed to Pay">
                                 </form>
                             </div>
