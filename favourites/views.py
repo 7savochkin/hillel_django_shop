@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, RedirectView
 
@@ -23,6 +24,7 @@ class AddFavouritesView(GetFavouritesMixin, RedirectView):
         form = AddFavouritesForm(request.POST,
                                  favourites=self.get_favourites_object())
         if form.is_valid():
+            messages.success(request, message='Product was add to favourites!')
             form.save()
         return self.get(request, *args, **kwargs)
 
@@ -34,5 +36,6 @@ class DeleteFavouritesView(GetFavouritesMixin, RedirectView):
         form = DeleteFavouritesForm(request.POST,
                                     favourites=self.get_favourites_object())
         if form.is_valid():
+            messages.warning(request, message='Product was deleted!')
             form.save()
         return self.get(request, *args, **kwargs)

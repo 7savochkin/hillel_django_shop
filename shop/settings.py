@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'users',
     'tracking',
     'currencies',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 AUTH_USER_MODEL = 'users.User'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'users.backends.PhoneModelBackend'
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

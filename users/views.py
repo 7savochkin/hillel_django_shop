@@ -1,24 +1,39 @@
+from django.contrib import messages
 from django.contrib.auth import login
-from django.shortcuts import redirect
-from django.views.generic import TemplateView
+from django.views.generic import FormView
+from django.contrib.auth.views import LoginView as AuthLoginView
 
-from users.forms import SignUpModelForm
+from shop.settings import AUTHENTICATION_BACKENDS
+
+from users.forms import SignUpModelForm, CustomAuthenticationForm
 
 
-class SignUpView(TemplateView):
+class SignUpView(FormView):
     template_name = 'registration/sign_up.html'
+    form_class = SignUpModelForm
+    success_url = '/main/'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({'form': kwargs.get('form') or SignUpModelForm})
-        return context
+    def form_valid(self, form):
+        new_user = form.save()
+        messages.success(request=self.request,
+                         message=f'User {new_user.email} was created')
+        login(self.request, new_user, backend=AUTHENTICATION_BACKENDS[0])
+        return super(SignUpView, self).form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        form = context['form']
-        form = form(request.POST)
-        if form.is_valid():
-            new_user = form.save()
-            login(request, new_user)
-            return redirect('/main/')
-        return self.get(request, form=form, *args, **kwargs)
+    def form_invalid(self, form):
+        messages.error(self.request, message=f'Error action')
+        return super(SignUpView, self).form_invalid(form)
+
+
+class LoginView(AuthLoginView):
+    form_class = CustomAuthenticationForm
+
+    def form_valid(self, form):
+        messages.success(self.request,
+                         f'Welcome back {form.get_user().email}')
+        return super(LoginView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request,
+                       'Error login')
+        return super(LoginView, self).form_invalid(form)

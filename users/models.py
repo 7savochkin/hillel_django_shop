@@ -7,6 +7,7 @@ from django.core.validators import EmailValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(DjangoUserManager):
@@ -60,6 +61,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    phone = PhoneNumberField(blank=True, null=True)
+    is_phone_valid = models.BooleanField(default=False)
 
     objects = UserManager()
 

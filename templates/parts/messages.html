@@ -1,0 +1,11 @@
+{% if messages %}
+<ul class="messages list-unstyled">
+    {% for message in messages %}
+        <li id="message_{{ forloop.counter0 }}"
+            class="alert {% if message.tags %} alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert">
+            <span class="p-3">{{ message }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
