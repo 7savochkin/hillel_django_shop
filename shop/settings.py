@@ -16,6 +16,7 @@ import environ
 from celery.schedules import crontab
 from django.urls import reverse_lazy
 
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     # own apps
+    'config',
     'main',
     'products',
     'favourites',
@@ -126,6 +128,16 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'users.backends.PhoneModelBackend'
 ]
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST', default='EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT', default='EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', default='EMAIL_USE_TLS')
+EMAIL_SUBJECT_PREFIX = 'BMW Company'
+SERVER_EMAIL = EMAIL_HOST_USER
+
+MANAGERS = [('Oleg, ')]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
