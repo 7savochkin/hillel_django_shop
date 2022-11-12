@@ -137,7 +137,6 @@ EMAIL_USE_TLS = env('EMAIL_USE_TLS', default='EMAIL_USE_TLS')
 EMAIL_SUBJECT_PREFIX = 'BMW Company'
 SERVER_EMAIL = EMAIL_HOST_USER
 
-MANAGERS = [('Oleg, ')]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
