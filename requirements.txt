@@ -12,3 +12,4 @@ requests==2.28.1
 pymemcache==4.0.0
 django-phonenumber-field==7.0.0
 phonenumbers==8.13.0
+django-silk==5.0.2
