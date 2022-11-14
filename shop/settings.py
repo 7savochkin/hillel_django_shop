@@ -47,12 +47,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.staticfiles",
     # external apps
     'django_extensions',
     'django_celery_results',
     'django_celery_beat',
     'silk',
+    "debug_toolbar",
     # own apps
     'config',
     'main',
@@ -75,14 +76,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'shop.middlewares.ErrorTraceMiddleware',
-    'silk.middleware.SilkyMiddleware'
+    'silk.middleware.SilkyMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'shop.urls'
 APPEND_SLASH = True
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': "django.template.backends.django.DjangoTemplates",
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -190,3 +192,8 @@ CACHES = {
         'LOCATION': 'django_cache',
     }
 }
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

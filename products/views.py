@@ -15,7 +15,10 @@ class ProductView(ListView):
     model = Product
 
     def get_queryset(self):
-        return self.model.get_products()
+        query_set = super(ProductView, self).get_queryset()
+        query_set = query_set.select_related('category').prefetch_related(
+            'products__products')
+        return self.model.get_products() and query_set
 
 
 class ProductDetail(DetailView):
