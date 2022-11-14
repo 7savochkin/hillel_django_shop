@@ -25,9 +25,9 @@ class ShoppingCartView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ShoppingCartView, self).get_context_data()
         context.update({
-            'order': Order.objects.get_or_create(is_active=True,
-                                                 is_paid=False,
-                                                 user=self.request.user)[0]
+            'order': Order.objects.select_related('user').prefetch_related(
+                'products').get_or_create(is_active=True, is_paid=False,
+                                          user=self.request.user)[0]
         })
         return context
 
