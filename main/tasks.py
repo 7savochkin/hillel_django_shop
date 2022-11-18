@@ -1,4 +1,4 @@
-from django.core.mail import mail_managers, send_mail
+from django.core.mail import send_mail
 
 from config.models import Config
 from shop.celery import app

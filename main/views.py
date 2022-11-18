@@ -14,5 +14,6 @@ class MainView(FormView):
     def form_valid(self, form):
         send_contact_form.delay(form.cleaned_data['email'],
                                 form.cleaned_data['text'])
+        print('form_valid')
         messages.success(self.request, 'Your mail has been send!')
-        return super(MainView, self).form_valid(form)
+        return super().form_valid(form)

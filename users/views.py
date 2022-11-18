@@ -21,7 +21,7 @@ class SignUpView(FormView):
         return super(SignUpView, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, message=f'Error action')
+        messages.error(self.request, message='Error action')
         return super(SignUpView, self).form_invalid(form)
 
 

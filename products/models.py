@@ -62,7 +62,8 @@ class Product(LifecycleModelMixin, PrimaryKeyMixin):
 class Category(PrimaryKeyMixin):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='images/category')
+    image = models.ImageField(upload_to='images/category',
+                              default='static/images/products/no_image.jpg')
 
     def __str__(self):
         return f'{self.name} | {self.description}'

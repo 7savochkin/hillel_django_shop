@@ -4,4 +4,6 @@ exclude =
     __pycache__,
     venv/,
     *migrations/*.*,
+    *tests*.py
+    settings_tests.p
 
