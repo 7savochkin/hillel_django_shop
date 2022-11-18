@@ -1,5 +1,7 @@
 from django.urls import reverse
 
+from feedbacks.models import Feedback
+
 
 def test_feedbacks(client, faker, login_user):
     url = reverse('feedbacks')

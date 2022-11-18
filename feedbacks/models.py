@@ -15,7 +15,7 @@ class Feedback(LifecycleModelMixin, PrimaryKeyMixin):
         validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     def __str__(self):
-        return f'{self.user.username} | {self.text} | {self.rating}'
+        return f'{self.user.email} | {self.text} | {self.rating}'
 
     @classmethod
     def _cache_key(cls):

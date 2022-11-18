@@ -34,6 +34,12 @@ def test_login_user(client, faker):
     assert response.status_code == 200
     assert response.context['form'].errors['__all__'][0] == 'Please enter a correct email address and password. Note that both fields may be case-sensitive.'
 
+    del data['username']
+    data['phone'] = faker.word()
+    data['password'] = password
+    response = client.post(url, data=data)
+    assert response.status_code == 200
+
     data['username'] = email
     data['password'] = password
     response = client.post(url, data=data)
