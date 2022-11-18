@@ -94,3 +94,4 @@ def test_pay_order(client, product, faker, discount, login_user):
     assert response.status_code == 200
     assert response.context_data['order'].is_active
     assert not response.context_data['order'].is_paid
+    assert not response.context_data['order'].products.all()
