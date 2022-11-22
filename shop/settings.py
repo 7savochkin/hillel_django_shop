@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 import environ
+from celery.schedules import crontab
 from django.urls import reverse_lazy
+
 
 env = environ.Env(
     # set casting, default value
@@ -45,13 +47,24 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.staticfiles",
+    # external apps
+    'django_extensions',
+    'django_celery_results',
+    'django_celery_beat',
+    'silk',
+    "debug_toolbar",
     # own apps
+    'config',
     'main',
     'products',
+    'favourites',
     'orders',
     'feedbacks',
     'users',
+    'tracking',
+    'currencies',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -62,13 +75,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'shop.middlewares.ErrorTraceMiddleware',
+    'silk.middleware.SilkyMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'shop.urls'
-
+APPEND_SLASH = True
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': "django.template.backends.django.DjangoTemplates",
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -111,6 +127,20 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', # noqa
     },
 ]
+AUTH_USER_MODEL = 'users.User'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'users.backends.PhoneModelBackend'
+]
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST', default='EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT', default='EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', default='EMAIL_USE_TLS')
+EMAIL_SUBJECT_PREFIX = 'BMW Company'
+SERVER_EMAIL = EMAIL_HOST_USER
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -140,3 +170,30 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGOUT_REDIRECT_URL = reverse_lazy('main')
 LOGIN_REDIRECT_URL = reverse_lazy('main')
 LOGIN_URL = reverse_lazy('login')
+
+
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default="CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = 'django_celery_results.backends.database.DatabaseBackend' # noqa
+CELERY_IMPORTS = ("shop.tasks",)
+CELERY_BEAT_SCHEDULE = {
+    # Executes at sunset in Melbourne
+    'Get currency': {
+        'task': 'currencies.tasks.get_currencies',
+        'schedule': crontab(hour='9', minute='1'),
+    },
+    'Update price': {
+        'task': 'products.tasks.update_currency_price',
+        'schedule': crontab(hour='12', minute='1'),
+    },
+}
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'django_cache',
+    }
+}
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

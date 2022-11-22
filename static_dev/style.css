@@ -1,3 +1,11 @@
 .logo{
     width: 64px;
 }
+
+ul.messages{
+    display: inline-block;
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    z-index: 9;
+}

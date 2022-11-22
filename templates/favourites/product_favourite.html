@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Favourites
+{% endblock %}
+{% block content %}
+    <section class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                {% if favourites.products.exists %}
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-normal mb-0 text-black">
+                            Favourites</h3>
+                    </div>
+                    {% for product in favourites.products.all %}
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img
+                                                src="{{ product.image.url }}"
+                                                class="img-fluid rounded-3"
+                                                alt="{{ product.name }}">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">{{ product.name }}</p>
+                                        <p><span
+                                                class="text-muted">Category: </span>{{ product.category.name }}
+                                            <br><span
+                                                    class="text-muted">Sku: </span>{{ product.sku }}
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">
+                                            $ {{ product.price }}</h5>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <form method="post"
+                                              action="{% url 'add_shopping_cart' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden"
+                                                   value="{{ product.id }}"
+                                                   name="product_uuid">
+                                            <input type="submit"
+                                                   class="btn btn-outline-success"
+                                                   value="Buy it">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="" class="text-danger"><i
+                                                class="fas fa-trash fa-lg"></i></a>
+                                        <form method="post"
+                                              action="{% url 'delete_favourites' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden"
+                                                   value="{{ product.id }}"
+                                                   name="product_uuid">
+                                            <input type="submit"
+                                                   class="btn btn-outline-danger"
+                                                   value="Delete">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-normal mb-0 text-black">Favourites</h3>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Please choose your favourite products</h4>
+                            <a href="{% url 'products' %}"
+                               class="btn btn-primary">
+                                Our products
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

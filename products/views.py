@@ -3,7 +3,7 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView
 
 from products.forms import ImportForm
 from products.models import Product
@@ -12,6 +12,16 @@ from shop.settings import DOMAIN
 
 
 class ProductView(ListView):
+    model = Product
+
+    def get_queryset(self):
+        query_set = super(ProductView, self).get_queryset()
+        query_set = query_set.select_related('category').prefetch_related(
+            'products__products')
+        return self.model.get_products() and query_set
+
+
+class ProductDetail(DetailView):
     model = Product
 
 

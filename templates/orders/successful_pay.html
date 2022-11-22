@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+    Thanks
+{% endblock %}
+{% block content %}
+    <section>
+        <div class="container">
+            <h2>Thank you for buy!</h2>
+            <a href="{% url 'products' %}"
+               class="btn btn-primary">
+                Return to products
+            </a>
+        </div>
+    </section>
+{% endblock %}

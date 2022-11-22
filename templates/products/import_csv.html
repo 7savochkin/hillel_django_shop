@@ -9,7 +9,7 @@
             <h1>Upload File</h1>
         </div>
         <div class="row-2">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" ">
                 {% csrf_token %}
                 {% for field in form %}
                     {{ field }}
