@@ -188,10 +188,13 @@ CELERY_BEAT_SCHEDULE = {
 }
 CACHES = {
     'default': {
+        # 'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        # 'LOCATION': env('MEMCACHE_LOCATION', default='MEMCACHE_LOCATION'),
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': 'django_cache',
     }
 }
+
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
