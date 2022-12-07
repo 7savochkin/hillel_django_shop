@@ -1,32 +1,11 @@
 import logging
 
-import requests
+from shop.api_clients import BaseClient
 
 logger = logging.getLogger(__name__)
 
 
-class GetCurrencyBaseClient:
-    base_url = None
-
-    def _request(self, method: str,
-                 params: dict = None,
-                 headers: dict = None,
-                 data: dict = None):
-        try:
-            response = requests.request(
-                url=self.base_url,
-                method=method,
-                params=params or {},
-                data=data or {},
-                headers=headers or {}
-            )
-        except Exception as error:
-            logger.error(error)
-        else:
-            return response.json()
-
-
-class PrivatBankAPI(GetCurrencyBaseClient):
+class PrivatBankAPI(BaseClient):
     """
          [
             {
@@ -42,7 +21,7 @@ class PrivatBankAPI(GetCurrencyBaseClient):
     base_url = 'https://api.privatbank.ua/p24api/pubinfo'
 
     def get_currency(self):
-        currency_list = self._request(
+        currency_list = self.get_request(
             'GET',
             params={'exchange': '', 'json': '', 'coursid': 5}
         )
@@ -54,7 +33,7 @@ class PrivatBankAPI(GetCurrencyBaseClient):
         return currency_list
 
 
-class MonobankAPI(GetCurrencyBaseClient):
+class MonobankAPI(BaseClient):
     """
     [
         {
@@ -76,7 +55,7 @@ class MonobankAPI(GetCurrencyBaseClient):
             840: 'USD',
             978: 'EUR'
         }
-        currency_list = self._request(
+        currency_list = self.get_request(
             'GET',
             params={'json': ''}
         )
@@ -101,7 +80,7 @@ class MonobankAPI(GetCurrencyBaseClient):
         return self._reformat_currency()
 
 
-class NationalBankAPI(GetCurrencyBaseClient):
+class NationalBankAPI(BaseClient):
     """
     [
         {
@@ -117,7 +96,7 @@ class NationalBankAPI(GetCurrencyBaseClient):
     base_url = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange'
 
     def _reformat_currency(self):
-        currency_list = self._request(
+        currency_list = self.get_request(
             'GET',
             params={'json': ''}
         )

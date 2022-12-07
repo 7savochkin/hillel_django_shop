@@ -3,7 +3,7 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView, DetailView
+from django.views.generic import FormView, DetailView, TemplateView
 
 from products.forms import ImportForm
 from products.models import Product
@@ -11,18 +11,34 @@ from shop.mixins.views_mixins import StaffUserCheck
 from shop.settings import DOMAIN
 
 
-class ProductView(ListView):
-    model = Product
+class ProductView(TemplateView):
+    template_name = 'products/product_list.html'
 
-    def get_queryset(self):
-        query_set = super(ProductView, self).get_queryset()
-        query_set = query_set.select_related('category').prefetch_related(
-            'products__products')
-        return self.model.get_products() and query_set
+    def get_context_data(self, **kwargs):
+        context_data = super(ProductView, self).get_context_data(**kwargs)
+        used_products = [product for product in Product.objects.select_related(
+            'category').prefetch_related(
+            'products__products').iterator()
+                         if not product.used]
+        context_data.update({'object_list': used_products})
+        return context_data
 
 
 class ProductDetail(DetailView):
     model = Product
+
+
+class ProductUsedView(TemplateView):
+    template_name = 'products/product_used.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ProductUsedView, self).get_context_data(**kwargs)
+        used_products = [product for product in Product.objects.select_related(
+            'category').prefetch_related(
+            'products__products').iterator()
+                         if product.used]
+        context_data.update({'used_products': used_products})
+        return context_data
 
 
 @login_required

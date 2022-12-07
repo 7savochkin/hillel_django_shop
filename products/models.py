@@ -17,6 +17,7 @@ class Product(LifecycleModelMixin, PrimaryKeyMixin):
     category = models.ForeignKey(
         'products.Category',
         on_delete=models.CASCADE)
+    used = models.BooleanField(default=False)
     price = models.DecimalField(
         max_digits=MAX_DIGITS,
         decimal_places=DECIMAL_PLACES,
