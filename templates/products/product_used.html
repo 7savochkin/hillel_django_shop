@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Products
+{% endblock %}
+{% block content %}
+    <section>
+        <div class="container">
+            <h2>Our products:</h2>
+            <div class="row">
+                {% for product in used_products %}
+                    <div class="col {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %}">
+                        <div class="mb-3">
+                            <div class="card border-primary"
+                                 style="width: 18rem;">
+                                <img src="{{ product.image.url }}"
+                                     class="product-image p-3"
+                                     alt="{{ product.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ product.category.name }}</h6>
+                                    <p class="card-text">
+                                        {{ product.description|truncatechars:40 }}<br>
+                                        <br>
+                                        {% if product.products.exists %}
+                                            <p>Including:</p>
+                                            {% for sub in product.products.iterator %}
+                                                <p>{{ sub.name }}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    <i>Price: {{ product.price }} {{ product.currency }}</i>
+                                    </p>
+                                    <a href="{% url 'product_detail' product.id %}"
+                                       class="btn btn-primary">
+                                        View Product
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

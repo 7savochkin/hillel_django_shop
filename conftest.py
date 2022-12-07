@@ -74,7 +74,6 @@ def test_file(db):
     os.remove(os.getcwd() + '/test.csv')
 
 
-
 @pytest.fixture(scope='function')
 def discount(db):
     discount = Discount.objects.create(
