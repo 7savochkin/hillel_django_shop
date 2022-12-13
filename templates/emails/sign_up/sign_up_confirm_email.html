@@ -1,0 +1,13 @@
+{% load i18n %}{% autoescape off %}
+{% blocktranslate %}You're receiving this email for confirmation your user account at {{ site_name }}.{% endblocktranslate %}
+
+{% translate "Please go to the following:" %}
+{% block reset_link %}
+{{ domain }}{% url 'sign_up_mail_confirm' uidb64=uid token=token %}
+{% endblock %}
+
+{% translate "Thanks for using our site!" %}
+
+{% blocktranslate %}The {{ site_name }} team{% endblocktranslate %}
+
+{% endautoescape %}

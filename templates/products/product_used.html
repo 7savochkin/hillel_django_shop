@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    Products
+    Used Products
 {% endblock %}
 {% block content %}
     <section>
         <div class="container">
-            <h2>Our products:</h2>
+            <h2>Used products:</h2>
             <div class="row">
                 {% for product in used_products %}
                     <div class="col {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %}">
