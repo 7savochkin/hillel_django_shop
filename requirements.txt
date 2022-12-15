@@ -24,3 +24,7 @@ factory-boy==3.2.1
 coverage==6.5.0
 gunicorn==20.1.0
 beautifulsoup4==4.11.1
+djangorestframework==3.14.0
+markdown==3.4.1
+django-filter==22.1
+django-widget-tweaks==1.4.12

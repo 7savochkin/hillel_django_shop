@@ -50,7 +50,8 @@ class Product(LifecycleModelMixin, PrimaryKeyMixin):
     def get_products(cls):
         products = cache.get(cls._cache_key())
         if not products:
-            products = Product.objects.all()
+            products = Product.objects.select_related('category')\
+                .prefetch_related('products__products').all()
             cache.set(cls._cache_key(), products)
         return products
 

@@ -8,7 +8,16 @@
         <div class="container">
             <h2>Used products:</h2>
             <div class="row">
-                {% for product in used_products %}
+                <div class="col-12">
+                    <form>
+                        {% include 'parts/simple_form.html' with form=filter_form %}
+                        <br>
+                        <button class="btn btn-primary" type="submit">Filter
+                        </button>
+                    </form>
+                    <br>
+                </div>
+                {% for product in object_list %}
                     <div class="col {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %}">
                         <div class="mb-3">
                             <div class="card border-primary"
@@ -28,7 +37,7 @@
                                                 <p>{{ sub.name }}</p>
                                             {% endfor %}
                                         {% endif %}
-                                    <i>Price: {{ product.price }} {{ product.currency }}</i>
+                                        <i>Price: {{ product.price }} {{ product.currency }}</i>
                                     </p>
                                     <a href="{% url 'product_detail' product.id %}"
                                        class="btn btn-primary">
@@ -39,6 +48,36 @@
                         </div>
                     </div>
                 {% endfor %}
+            <div class="col-12">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                             {% if object_list.has_previous %}
+                                 <li class="page-item">
+                                    <a class="page-link" href="?page=1">&laquo; first</a>
+                                 </li>
+                                 <li class="page-item">
+                                     <a class="page-link" href="?page={{ object_list.previous_page_number }}">previous</a>
+                                 </li>
+                             {% endif %}
+                        {% for page in "x"|rjust:object_list.paginator.num_pages %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ forloop.counter }}">
+                                    {{ forloop.counter }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                            {% if object_list.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ object_list.next_page_number }}">next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ object_list.paginator.num_pages }}">last &raquo;</a>
+                                </li>
+                            {% endif %}
+                            <li class="page-item"></li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </section>
