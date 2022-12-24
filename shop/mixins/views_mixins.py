@@ -31,6 +31,6 @@ class ProductFilterMixin(TemplateView):
         page_number = self.request.GET.get('page')
         paginator = Paginator(filtered_queryset, 2)
         pages = paginator.get_page(page_number)
-        context_data.update({'object_list': pages})
+        context_data.update({'page_obj': pages})
         context_data.update({'filter_form': self.filter_form})
         return context_data

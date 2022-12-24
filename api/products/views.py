@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
+
+from api.products.filters import ProductFilter
 from api.products.serializers import ProductsSerializer, CategoriesSerializer
 from products.models import Product, Category
 
@@ -14,6 +16,7 @@ class ProductsViewSet(mixins.ListModelMixin,
     queryset = Product.objects.all()
     serializer_class = ProductsSerializer
     permission_classes = [IsAuthenticated]
+    filterset_class = ProductFilter
 
 
 class CategoryViewSet(mixins.ListModelMixin,
