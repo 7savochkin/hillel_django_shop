@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView, DetailView
 from django_filters.views import FilterView
 
+from favourites.mixins import GetFavouritesMixin
 from products.filters import ProductFilter
 from products.forms import ImportForm
 from products.models import Product
@@ -24,8 +25,15 @@ class ProductView(FilterView):
         return qs
 
 
-class ProductDetail(DetailView):
+class ProductDetail(GetFavouritesMixin, DetailView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'favourites_products': self.get_favourites_object().products.all()
+        })
+        return context
 
 
 class ProductUsedView(FilterView):
