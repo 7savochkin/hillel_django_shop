@@ -56,6 +56,9 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "widget_tweaks",
     "rest_framework",
+    'rest_framework.authtoken',
+    'django_filters',
+    'drf_yasg',
     # own apps
     'config',
     'main',
@@ -203,3 +206,12 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'api.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
+}

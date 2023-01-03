@@ -4,27 +4,39 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import FormView, DetailView
+from django_filters.views import FilterView
 
-from products.forms import ImportForm, ProductFilterForm
+from products.filters import ProductFilter
+from products.forms import ImportForm
 from products.models import Product
-from shop.mixins.views_mixins import StaffUserCheck, ProductFilterMixin
+from shop.mixins.views_mixins import StaffUserCheck
 from shop.settings import DOMAIN
 
 
-class ProductView(ProductFilterMixin):
-    template_name = 'products/product_list.html'
-    filter_form = ProductFilterForm
-    queryset = Product.get_products().filter(used=False)
+class ProductView(FilterView):
+    model = Product
+    paginate_by = 4
+    filterset_class = ProductFilter
+    template_name_suffix = '_list'
+
+    def get_queryset(self):
+        qs = self.model.get_products().filter(used=False)
+        return qs
 
 
 class ProductDetail(DetailView):
     model = Product
 
 
-class ProductUsedView(ProductFilterMixin):
-    template_name = 'products/product_used.html'
-    filter_form = ProductFilterForm
-    queryset = Product.get_products().filter(used=True)
+class ProductUsedView(FilterView):
+    model = Product
+    paginate_by = 4
+    filterset_class = ProductFilter
+    template_name_suffix = '_list'
+
+    def get_queryset(self):
+        qs = self.model.get_products().filter(used=True)
+        return qs
 
 
 @login_required
