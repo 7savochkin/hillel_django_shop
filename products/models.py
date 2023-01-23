@@ -16,7 +16,8 @@ class Product(LifecycleModelMixin, PrimaryKeyMixin):
                               default='static/images/products/no_image.jpg')
     category = models.ForeignKey(
         'products.Category',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE
+    )
     used = models.BooleanField(default=False)
     price = models.DecimalField(
         max_digits=MAX_DIGITS,
@@ -50,7 +51,8 @@ class Product(LifecycleModelMixin, PrimaryKeyMixin):
     def get_products(cls):
         products = cache.get(cls._cache_key())
         if not products:
-            products = Product.objects.all()
+            products = Product.objects.select_related('category')\
+                .prefetch_related('products__products').all()
             cache.set(cls._cache_key(), products)
         return products
 

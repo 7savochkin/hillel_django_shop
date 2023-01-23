@@ -1,0 +1,37 @@
+{% load widget_tweaks %}
+
+{% for field in form %}
+    <label>{{ field.label }}</label>
+    {% if field|widget_type == 'select' %}
+        {{ field|add_class:'form-select' }}
+    {% else %}
+        <input type="{{ field.field.widget.input_type }}"
+               name="{{ field.name }}"
+               id="{{ field.auto_id }}"
+               value="{% if field.initial %}{{ field.initial }}{% elif request.GET.name %}{{ request.GET.name }}{% endif %}"
+               class="form-control">
+        {% if field.help_text %}
+            <div class="form-text">
+                {{ field.help_text }}
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if field.errors %}
+        <div class="mb-2">
+            <ul>
+                {% for error in field.errors %}
+                    <li class="text-danger small">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endfor %}
+{% if form.non_field_errors %}
+    <div class="mb-2">
+        <ul>
+            {% for error in form.non_field_errors %}
+                <li class="text-danger small">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

@@ -8,6 +8,14 @@
         <div class="container">
             <h2>Our products:</h2>
             <div class="row">
+                <div class="col-12">
+                    <form>
+                        {% include 'parts/simple_form.html' with form=filter.form %}
+                        <br>
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </form>
+                    <br>
+                </div>
                 {% for product in object_list %}
                     <div class="col {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %}">
                         <div class="mb-3">
@@ -39,6 +47,42 @@
                         </div>
                     </div>
                 {% endfor %}
+                <div class="col-12">
+                    <div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">&laquo;
+                                            first</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                    </li>
+                                {% endif %}
+                                {% for i in "x"|rjust:page_obj.paginator.num_pages   %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ forloop.counter }}">
+                                            {{ forloop.counter }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?page={{ page_obj.next_page_number }}">next</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?page={{ page_obj.paginator.num_pages }}">last
+                                            &raquo;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

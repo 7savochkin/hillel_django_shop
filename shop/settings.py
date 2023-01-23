@@ -54,6 +54,11 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'silk',
     "debug_toolbar",
+    "widget_tweaks",
+    "rest_framework",
+    'rest_framework.authtoken',
+    'django_filters',
+    'drf_yasg',
     # own apps
     'config',
     'main',
@@ -103,10 +108,15 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME', default='DB_NAME'),
+        'USER': env('DB_USER', default='DB_USER'),
+        'PASSWORD': env('DB_PASSWORD', default='DB_PASSWORD'),
+        'HOST': env('DB_HOST', default='127.0.0.1'),
+        'PORT': env('DB_PORT', default=5432),
     }
 }
 
@@ -140,6 +150,7 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env('EMAIL_USE_TLS', default='EMAIL_USE_TLS')
 EMAIL_SUBJECT_PREFIX = 'BMW Company'
 SERVER_EMAIL = EMAIL_HOST_USER
+NOREPLY_EMAIL = 'noreply@gmail.com'
 
 
 # Internationalization
@@ -200,3 +211,12 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'api.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
+}

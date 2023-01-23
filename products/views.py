@@ -3,42 +3,48 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import FormView, DetailView, TemplateView
+from django.views.generic import FormView, DetailView
+from django_filters.views import FilterView
 
+from favourites.mixins import GetFavouritesMixin
+from products.filters import ProductFilter
 from products.forms import ImportForm
 from products.models import Product
 from shop.mixins.views_mixins import StaffUserCheck
 from shop.settings import DOMAIN
 
 
-class ProductView(TemplateView):
-    template_name = 'products/product_list.html'
+class ProductView(FilterView):
+    model = Product
+    paginate_by = 4
+    filterset_class = ProductFilter
+    template_name_suffix = '_list'
 
-    def get_context_data(self, **kwargs):
-        context_data = super(ProductView, self).get_context_data(**kwargs)
-        used_products = [product for product in Product.objects.select_related(
-            'category').prefetch_related(
-            'products__products').iterator()
-                         if not product.used]
-        context_data.update({'object_list': used_products})
-        return context_data
+    def get_queryset(self):
+        qs = self.model.get_products().filter(used=False)
+        return qs
 
 
-class ProductDetail(DetailView):
+class ProductDetail(GetFavouritesMixin, DetailView):
     model = Product
 
-
-class ProductUsedView(TemplateView):
-    template_name = 'products/product_used.html'
-
     def get_context_data(self, **kwargs):
-        context_data = super(ProductUsedView, self).get_context_data(**kwargs)
-        used_products = [product for product in Product.objects.select_related(
-            'category').prefetch_related(
-            'products__products').iterator()
-                         if product.used]
-        context_data.update({'used_products': used_products})
-        return context_data
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'favourites_products': self.get_favourites_object().products.all()
+        })
+        return context
+
+
+class ProductUsedView(FilterView):
+    model = Product
+    paginate_by = 4
+    filterset_class = ProductFilter
+    template_name_suffix = '_list'
+
+    def get_queryset(self):
+        qs = self.model.get_products().filter(used=True)
+        return qs
 
 
 @login_required

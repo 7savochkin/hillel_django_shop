@@ -136,3 +136,6 @@ dmypy.json
 #Redis staff
 dump.rdb
 /django_cache/
+
+# other
+swagger.json

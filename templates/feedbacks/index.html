@@ -5,28 +5,70 @@
     Feedbacks
 {% endblock title %}
 {% block content %}
-    <div class="text-center">
-        <h1>Feedbacks:</h1>
-        {% for field in feedbacks %}
-            <p>
-                <span>User: {{ field.user }} |</span>
-                <span>Text: {{ field.text }} |</span>
-                <span>Rating: {{ field.rating }} ;</span>
-            </p>
-        {% endfor %}
-        <h1>Please, write your feedback</h1>
-        <div>
-            <form method="post">
-                {% csrf_token %}
-                {% for field in form %}
-                    <label>{{ field.label }}</label>
-                    {{ field }}
+    <section class="feedback">
+        <div class="container">
+            <div class="row gx-3 gy-3">
+                <div class="col col-lg-4 offset-lg-4 mb-3">
+                    <h2>Leave your feedback</h2>
+                    <form method="post">
+                        {% load widget_tweaks %}
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <label>{{ field.label }}</label>
+                            {% if field|widget_type == 'select' %}
+                                {{ field|add_class:'form-select' }}
+                            {% else %}
+                                <input type="{{ field.field.widget.input_type }}"
+                                       name="{{ field.name }}"
+                                       id="{{ field.auto_id }}"
+                                       value="
+
+                                               {% if field.initial %}{{ field.initial }}{% elif request.GET.name %}{{ request.GET.name }}{% endif %}"
+                                       class="form-control">
+                                {% if field.help_text %}
+                                    <div class="form-text">
+                                        {{ field.help_text }}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="mb-2">
+                                    <ul>
+                                        {% for error in field.errors %}
+                                            <li class="text-danger small">{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            <div class="mb-2">
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                        <li class="text-danger small">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <input class="btn btn-primary mt-3" type="submit"
+                               value="Submit">
+                    </form>
+                </div>
+                <div class="d-none d-lg-block col-lg-4"></div>
+                {% for feedback in feedbacks %}
+                    <div class="col-12 col-lg-4 col-lg-offset-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ feedback.rating }}
+                                <span class="visually-hidden">unread messages</span>
+                              </span>
+                                {{ feedback.text }}
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
-                <input type="submit" value="Write feedback">
-            </form>
-            <p>
-                {{ form.errors }}
-            </p>
+            </div>
         </div>
-    </div>
+    </section>
 {% endblock content %}

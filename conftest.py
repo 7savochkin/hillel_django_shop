@@ -23,6 +23,12 @@ def faker():
     yield fake
 
 
+@pytest.fixture
+def cache_code(request):
+    cache_code = request.config.cache.get('1_code', 00000)
+    yield cache_code
+
+
 @pytest.fixture(scope='function')
 def user(db):
     user, _ = User.objects.get_or_create(
