@@ -6,6 +6,7 @@ UserModel = get_user_model()
 
 class PhoneModelBackend(ModelBackend):
     def authenticate(self, request, phone=None, password=None, **kwargs):
+
         if phone is None or password is None:
             return
         try:

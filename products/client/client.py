@@ -26,7 +26,7 @@ class Parser(BaseClient):
                     category_name = clear_tag
                 else:
                     category_name = 'No category'
-        except (AssertionError, IndexError) as error:
+        except (AttributeError, IndexError) as error:
             logger.error(error)
         else:
             product_list = []
@@ -56,7 +56,7 @@ class Parser(BaseClient):
                         'sku': sku,
                         'used': True
                     })
-                except (AssertionError, KeyError) as error:
+                except (AttributeError, KeyError) as error:
                     logger.error(error)
             return product_list
 
