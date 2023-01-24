@@ -139,3 +139,4 @@ dump.rdb
 
 # other
 swagger.json
+settings_local.py

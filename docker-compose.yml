@@ -2,17 +2,19 @@ version: "3.1"
 services:
   web:
     build: .
-    command:
-      - python3
-      - manage.py
-      - runserver
-      - 0:8700
+    command: gunicorn shop.wsgi
     ports:
-      - 8700:8700
+     - ${GUNICORN_PORT}:${GUNICORN_PORT}
     volumes:
       - .:/code
+    restart: always
+    env_file:
+      - .env
     depends_on:
       - db
+      - celery
+      - celery-beat
+      - memcached
   db:
     image: postgres:15.1
     volumes:
@@ -21,6 +23,37 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+    restart: always
+  redis:
+    image: redis:latest
+    restart: always
+  celery:
+    build: .
+    command: celery -A shop worker -l INFO
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+  celery-beat:
+    build: .
+    command: celery -A shop beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+  memcached:
+    image: memcached:latest
+    restart: always
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    env_file:
+      - .env
+
 
 volumes:
   postgres_data:

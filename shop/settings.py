@@ -16,7 +16,6 @@ import environ
 from celery.schedules import crontab
 from django.urls import reverse_lazy
 
-
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -125,16 +124,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', # noqa
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', # noqa
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', # noqa
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', # noqa
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        # noqa
     },
 ]
 AUTH_USER_MODEL = 'users.User'
@@ -151,7 +154,6 @@ EMAIL_USE_TLS = env('EMAIL_USE_TLS', default='EMAIL_USE_TLS')
 EMAIL_SUBJECT_PREFIX = 'BMW Company'
 SERVER_EMAIL = EMAIL_HOST_USER
 NOREPLY_EMAIL = 'noreply@gmail.com'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -173,6 +175,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static/'
 STATICFILES_DIRS = ['static_dev']
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -182,9 +187,8 @@ LOGOUT_REDIRECT_URL = reverse_lazy('main')
 LOGIN_REDIRECT_URL = reverse_lazy('main')
 LOGIN_URL = reverse_lazy('login')
 
-
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', default="CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = 'django_celery_results.backends.database.DatabaseBackend' # noqa
+CELERY_RESULT_BACKEND = 'django_celery_results.backends.database.DatabaseBackend'  # noqa
 CELERY_IMPORTS = ("shop.tasks",)
 CELERY_BEAT_SCHEDULE = {
     # Executes at sunset in Melbourne
@@ -199,10 +203,10 @@ CELERY_BEAT_SCHEDULE = {
 }
 CACHES = {
     'default': {
-        # 'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        # 'LOCATION': env('MEMCACHE_LOCATION', default='MEMCACHE_LOCATION'),
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': 'django_cache',
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': env('MEMCACHE_LOCATION', default='MEMCACHE_LOCATION'),
+        # 'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        # 'LOCATION': 'django_cache',
     }
 }
 
@@ -220,3 +224,8 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     )
 }
+
+try:
+    from shop.settings_local import *
+except ImportError:
+    ...
